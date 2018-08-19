@@ -1,17 +1,39 @@
 #include <iostream>
 #include <cstring>
 
-#define N 1000
+#define N 1001
 
 using namespace std;
 
-void char2int(char* s, int* n, int len_n) {
-	for (int i = 0, j = len_n - 1; i < len_n; i++, j--) {
-		n[j] = s[i] - '0';
+void strNum2bigNum(char* str, int str_len) {
+	for (int i = 0; i < str_len / 2; i++) {
+		char t = str[i];
+		str[i] = str[str_len - 1 - i] - '0';
+		str[str_len - 1 - i] = t - '0';
+	}
+	if (str_len % 2 == 1) {
+		str[str_len / 2] -= '0';
 	}
 }
 
-void sum(int* a, int a_len, int* b, int b_len, int* c, int &c_len) {
+void bigNum2strNum(char* str, int str_len) {
+	for (int i = 0; i < str_len / 2; i++) {
+		char t = str[i];
+		str[i] = str[str_len - 1 - i] + '0';
+		str[str_len - 1 - i] = t + '0';
+	}
+	if (str_len % 2 == 1) {
+		str[str_len / 2] += '0';
+	}
+}
+
+void sum(char* a, int a_len, char* b, int b_len, char* c, int &c_len) {
+	
+	memset(c, 0, sizeof c);
+	
+	strNum2bigNum(a, a_len);
+	strNum2bigNum(b, b_len);
+	
 	c_len = a_len > b_len ? a_len : b_len;
 	int r = 0;
 	for (int i = 0; i < c_len; i++) {
@@ -22,7 +44,11 @@ void sum(int* a, int a_len, int* b, int b_len, int* c, int &c_len) {
 	if (r > 0) {
 		c[c_len] = r;
 		c_len++;
-	}  
+	}
+	
+	bigNum2strNum(a, a_len);
+	bigNum2strNum(b, b_len);
+	bigNum2strNum(c, c_len);
 }
 
 int main() {
@@ -30,30 +56,24 @@ int main() {
 	freopen("input.txt", "r", stdin);
 	freopen("output.txt", "w", stdout);
 	
-	char n1[N];
-	char n2[N];
+	char a[N];
+	char b[N];
+	char c[N];
 
-	cin >> n1;
-	cin >> n2;
-	
-	int a[N];
-	int b[N];
-	int c[N];
-	
 	memset(a, 0, sizeof a);
 	memset(b, 0, sizeof b);
-	memset(c, 0, sizeof c);
-	
-	int a_len = strlen(n1), b_len = strlen(n2), c_len = 1;
 
-	char2int(n1, a, a_len);
-	char2int(n2, b, b_len);
+	cin >> a;
+	cin >> b;
+	
+	int a_len = strlen(a), b_len = strlen(b), c_len = 1;
 
 	sum(a, a_len, b, b_len, c, c_len);
 
-	for (int i = c_len - 1; i >= 0; i--) {
-		cout << c[i];
-	}
+	cout << c;
+	
+	fclose(stdout);
+	fclose(stdin);
 	
 	return 0;
 }

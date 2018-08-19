@@ -1,21 +1,41 @@
 #include <iostream>
 #include <cstring>
 
-#define N 1000
+#define N 1009
 
 using namespace std;
 
-void char2int(char* s, int* n, int len_n) {
-	for (int i = 0, j = len_n - 1; i < len_n; i++, j--) {
-		n[j] = s[i] - '0';
+void strNum2bigNum(char* str, int str_len) {
+	for (int i = 0; i < str_len / 2; i++) {
+		char t = str[i];
+		str[i] = str[str_len - 1 - i] - '0';
+		str[str_len - 1 - i] = t - '0';
+	}
+	if (str_len % 2 == 1) {
+		str[str_len / 2] -= '0';
 	}
 }
 
-void sh_mult(int* a, int a_len, int m, int* c, int &c_len) {
+void bigNum2strNum(char* str, int str_len) {
+	for (int i = 0; i < str_len / 2; i++) {
+		char t = str[i];
+		str[i] = str[str_len - 1 - i] + '0';
+		str[str_len - 1 - i] = t + '0';
+	}
+	if (str_len % 2 == 1) {
+		str[str_len / 2] += '0';
+	}
+}
+
+void sh_mult(char* a, int a_len, int m, char* c, int &c_len) {
+	
+	memset(c, 0, sizeof c);
+	strNum2bigNum(a, a_len);
+	
 	c_len = a_len;
 	long long r = 0;
 	long long t;
-		
+	
 	for (int i = 0; i < a_len; i++) {
 		t = a[i] * m + r;
 		c[i] = t % 10;
@@ -31,35 +51,32 @@ void sh_mult(int* a, int a_len, int m, int* c, int &c_len) {
 	if (m == 0) {
 		c_len = 1;
 	}
+	
+	bigNum2strNum(a, a_len);
+	bigNum2strNum(c, c_len);
 }
 
 int main() {
 	
 	freopen("input.txt", "r", stdin);
 	freopen("output.txt", "w", stdout);
-	
-	char n1[N];
-	
+
+	char a[N], c[N];
 	int b;
 	
-	cin >> n1;
+	memset(a, 0, sizeof a);
+	
+	cin >> a;
 	cin >> b;
 	
-	int a[2500];
-	int c[2500];
-	
-	memset(a, 0, sizeof a);
-	memset(c, 0, sizeof c);
-	
-	int a_len = strlen(n1), c_len = 1;
-
-	char2int(n1, a, a_len);
+	int a_len = strlen(a), c_len = 1;
 
 	sh_mult(a, a_len, b, c, c_len);
 
-	for (int i = c_len - 1; i >= 0; i--) {
-		cout << c[i];
-	}
+	cout << c;
+	
+	fclose(stdin);
+	fclose(stdout);
 	
 	return 0;
 }
