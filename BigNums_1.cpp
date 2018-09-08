@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <fstream>
 
 #define N 1001
 
@@ -29,11 +30,6 @@ void bigNum2strNum(char* str, int str_len) {
 
 void sum(char* a, int a_len, char* b, int b_len, char* c, int &c_len) {
 	
-	memset(c, 0, sizeof c);
-	
-	strNum2bigNum(a, a_len);
-	strNum2bigNum(b, b_len);
-	
 	c_len = a_len > b_len ? a_len : b_len;
 	int r = 0;
 	for (int i = 0; i < c_len; i++) {
@@ -45,35 +41,39 @@ void sum(char* a, int a_len, char* b, int b_len, char* c, int &c_len) {
 		c[c_len] = r;
 		c_len++;
 	}
-	
-	bigNum2strNum(a, a_len);
-	bigNum2strNum(b, b_len);
-	bigNum2strNum(c, c_len);
 }
 
 int main() {
 	
-	freopen("input.txt", "r", stdin);
-	freopen("output.txt", "w", stdout);
-	
+	ifstream fin("input.txt");
+	ofstream fout("output.txt");
+		
 	char a[N];
 	char b[N];
 	char c[N];
 
 	memset(a, 0, sizeof a);
 	memset(b, 0, sizeof b);
+	memset(c, 0, sizeof c);
 
-	cin >> a;
-	cin >> b;
+	fin >> a;
+	fin >> b;
 	
 	int a_len = strlen(a), b_len = strlen(b), c_len = 1;
 
-	sum(a, a_len, b, b_len, c, c_len);
-
-	cout << c;
+	strNum2bigNum(a, a_len);
+	strNum2bigNum(b, b_len);
 	
-	fclose(stdout);
-	fclose(stdin);
+	sum(a, a_len, b, b_len, c, c_len);
+	
+	bigNum2strNum(a, a_len);
+	bigNum2strNum(b, b_len);
+	bigNum2strNum(c, c_len);
+
+	fout << c;
+	
+	fin.close();
+	fout.close();
 	
 	return 0;
 }

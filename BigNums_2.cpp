@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <fstream>
 
 #define N 1009
 
@@ -29,8 +30,6 @@ void bigNum2strNum(char* str, int str_len) {
 
 void sh_mult(char* a, int a_len, int m, char* c, int &c_len) {
 	
-	memset(c, 0, sizeof c);
-	strNum2bigNum(a, a_len);
 	
 	c_len = a_len;
 	long long r = 0;
@@ -51,32 +50,35 @@ void sh_mult(char* a, int a_len, int m, char* c, int &c_len) {
 	if (m == 0) {
 		c_len = 1;
 	}
-	
-	bigNum2strNum(a, a_len);
-	bigNum2strNum(c, c_len);
 }
 
 int main() {
 	
-	freopen("input.txt", "r", stdin);
-	freopen("output.txt", "w", stdout);
-
+	ifstream fin("input.txt");
+	ofstream fout("output.txt");
+	
 	char a[N], c[N];
 	int b;
 	
 	memset(a, 0, sizeof a);
+	memset(c, 0, sizeof c);
 	
-	cin >> a;
-	cin >> b;
+	fin >> a;
+	fin >> b;
 	
 	int a_len = strlen(a), c_len = 1;
-
+	
+	strNum2bigNum(a, a_len);
+	
 	sh_mult(a, a_len, b, c, c_len);
 
-	cout << c;
+	bigNum2strNum(a, a_len);
+	bigNum2strNum(c, c_len);
 	
-	fclose(stdin);
-	fclose(stdout);
+	fout << c;
+	
+	fin.close();
+	fout.close();
 	
 	return 0;
 }
