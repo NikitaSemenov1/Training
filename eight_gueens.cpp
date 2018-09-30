@@ -24,8 +24,8 @@ int diags2[15];
 bool f = true; //false если решение найдено
 
 void dfs(int i) {
-	for(int j = 0; j < 8 and f; j++) {
-		if (hor_lines[i] != 1 and vert_lines[j] != 1 and diags1[i+j] != 1 and diags2[7-i + j] != 1) {
+	for(int j = 0; j < 8 && f; j++) {
+		if (hor_lines[i] != 1 && vert_lines[j] != 1 && diags1[i+j] != 1 && diags2[7-i + j] != 1) {
 		 	//"занимаем" линии
 			hor_lines[i] = 1;
 		 	vert_lines[j] = 1;
